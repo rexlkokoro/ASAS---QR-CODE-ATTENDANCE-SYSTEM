@@ -1,53 +1,45 @@
-# QR-Code-Attendance-System
-The proposed solution offers a QR code for the attendees to scan it via a specific application. The QR code along with the attendee’s identity taken by the application will confirm his attendance. 
+QR-Code Attendance System
 
-This system also takes care of preventing unauthorized attendance registration using multi-factor authentication. Thus, the designed solution also uses facial recognition technology to authenticated user in addition to QR Code. That is, it considers “Something you have” i.e. QR Code for event, and “Something you are” i.e. face recognition by capturing your face to confirm identity of attendee. 
+A modern attendance-tracking application that combines QR code scanning and facial recognition to verify and log attendees automatically. Built with Python 3, OpenCV, PyZbar, Pillow and MySQL (running in Docker).
 
-The Application works in the described manner:
-i.   User Registration is done via registration.html
-ii.  User's QR Code is generated inside the Database.Thus,Distribution of QR Code takes place.
-iii. The application detects the QR Code decodes it,fetches the data of the user from the database and generates the recognizer database        for each user at the time of decoding.
-iv.  The design then runs the face recognizition algorithm to authenticate the user.
-v.   After identifing the user it makes an entry into the database regarding time of entrance of attendee and then it removes the              recognizer database created specially for him/her.
+Overview
 
-## Installation ##
+Instead of a paper sign-in sheet, each participant receives a unique QR code generated during registration. At check-in time, the app uses a webcam to:
 
-Requirements (Updated for Python 3)
+Scan the attendee’s QR code (“something you have”).
 
-Python 3.10+
-Works cross-platform (Windows / Linux).
+Match the attendee’s live face against the stored photo (“something you are”).
 
-OpenCV (opencv-contrib-python)
-Includes the extra modules needed for LBPH face recognizer:
+Only when both factors match does the system confirm attendance and record it in the database.
 
-pip install opencv-contrib-python
+How it works
 
+User registration is done through a simple form. User details and a face photo are stored in the database, and a QR code is generated for each user.
 
-NumPy (latest)
-(no longer pinned to 1.11.1)
+At check-in, the webcam feed is analysed in real time. The app decodes the QR code, looks up the attendee’s details and prepares a temporary recogniser model.
 
-pip install numpy
+Facial recognition runs on the live camera feed to ensure the person holding the QR code matches the stored photo.
 
+Attendance logging: if verification succeeds, the app inserts an entry with user ID and timestamp into the MySQL attendance table.
 
-mysqlclient
-(replaces the old MySQL-python which was Python 2-only):
+Cleanup: the temporary recogniser data created for that check-in is removed automatically.
 
-pip install mysqlclient
+Security
 
+This system enforces a basic form of multi-factor authentication:
 
-Pillow (latest)
-(replaces old 4.0.0 pin):
+Something you have: your event QR code.
 
-pip install Pillow
+Something you are: your face detected by OpenCV.
 
+This makes it much harder for someone else to register attendance on your behalf.
 
-pyzbar
-(Python 3-friendly QR/barcode decoder; replaces zbar bindings):
+Tech Stack
 
-pip install pyzbar
+Python 3 (OpenCV, PyZbar, Pillow, mysqlclient)
 
+MySQL 5.7 running in a Docker container (schema initialised automatically)
 
-Optional for local development:
+Docker Compose orchestration for quick setup
 
-pip install python-dotenv  # if you want to manage env vars from .env file
-
+Works on Windows (app runs locally) or Linux (with camera support)
