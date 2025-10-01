@@ -12,12 +12,42 @@ v.   After identifing the user it makes an entry into the database regarding tim
 
 ## Installation ##
 
-Requirements:
-* Python 2.7
-* Windows or Linux 
-* OpenCV 
-* numpy	(version 1.11.1)
-* MySQL-python (version 1.2.5)
-* Pillow (version 4.0.0)
-* zbar (version 0.10)
+Requirements (Updated for Python 3)
+
+Python 3.10+
+Works cross-platform (Windows / Linux).
+
+OpenCV (opencv-contrib-python)
+Includes the extra modules needed for LBPH face recognizer:
+
+pip install opencv-contrib-python
+
+
+NumPy (latest)
+(no longer pinned to 1.11.1)
+
+pip install numpy
+
+
+mysqlclient
+(replaces the old MySQL-python which was Python 2-only):
+
+pip install mysqlclient
+
+
+Pillow (latest)
+(replaces old 4.0.0 pin):
+
+pip install Pillow
+
+
+pyzbar
+(Python 3-friendly QR/barcode decoder; replaces zbar bindings):
+
+pip install pyzbar
+
+
+Optional for local development:
+
+pip install python-dotenv  # if you want to manage env vars from .env file
 
